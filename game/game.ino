@@ -24,7 +24,7 @@ class Game {
       void playNote(int note, int noteSpeed) const;
       void flashLed(int led, int flashSpeed) const;
     public:
-       static const int RASP_OUTPUT_PIN;
+      static const int RASP_OUTPUT_PIN;
       static const int RASP_INPUT_PIN;
       static const int RED_PIN;
       static const int BLUE_PIN;
@@ -80,8 +80,6 @@ static const int Game::GAMEOVER_TONE        = 200;
 
 // Construct and initialize the Game object.
 Game::Game(int difficulty) : gameSpeed(2000), lastButtonValue(-1), currentLevel(0), gameDifficulty(difficulty), gameIsOver(0) {
-    Serial.print("Constructing game object with difficulty: ");
-    Serial.println(difficulty);
     pinMode(Game::MICROPHONE_PIN, OUTPUT);
     pinMode(Game::BLUE_PIN, OUTPUT);
     pinMode(Game::RED_PIN, OUTPUT);
@@ -90,7 +88,6 @@ Game::Game(int difficulty) : gameSpeed(2000), lastButtonValue(-1), currentLevel(
 }
 
 Game::Game() : gameSpeed(2000), lastButtonValue(-1), currentLevel(0), gameDifficulty(10), gameIsOver(0) {
-    Serial.println("Constructing game object");
     pinMode(Game::MICROPHONE_PIN, OUTPUT);
     pinMode(Game::BLUE_PIN, OUTPUT);
     pinMode(Game::RED_PIN, OUTPUT);
@@ -116,10 +113,6 @@ int Game::debounce(int last, int buttonPin) {
  * Receives the button number and plays the corresponding note.
  */
 void Game::playNote(int note, int noteSpeed) const {
-    Serial.print("playNote: Playing note: ");
-    Serial.print(note);
-    Serial.print(" with speed: ");
-    Serial.println(noteSpeed);
     
     note = Game::getNote(note);
     
@@ -146,7 +139,6 @@ int Game::colorCodeToPin(int value) {
           ret_val = Game::YELLOW_PIN;
           break;
       default:
-        Serial.println("colorCodeToPin: Invalid value!");
         delay(1000);
         exit(0);
     }
@@ -173,7 +165,6 @@ int Game::pinToColorCode(int value) {
             ret_val = YELLOW;
             break;
         default:
-          Serial.println("pinToColorCode: Invalid value!");
           delay(1000);
           exit(0);
     }
@@ -203,7 +194,6 @@ int Game::getNote(int note) const {
           return_value = Game::GAMEOVER_TONE;
           break;        
       default:
-        Serial.println("playNote: Error! Invalid note!");
         delay(1000);
         exit(0);
     }
@@ -214,10 +204,7 @@ int Game::getNote(int note) const {
  * Flashes a led. Receives the led code and sets it to the corresponding pin.
  */
 void Game::flashLed(int led, int flashSpeed) const {
-    Serial.print("flashLed: Flashing LED: ");
-    Serial.print(led);
-    Serial.print(" with speed: ");
-    Serial.println(flashSpeed);
+
 
     led = Game::colorCodeToPin(led);
 
@@ -230,8 +217,6 @@ void Game::flashLed(int led, int flashSpeed) const {
  * Plays the next level.
  */
 void Game::playLevel() {
-  Serial.print("playLevel: Playing on level: ");
-  Serial.println(Game::currentLevel);
   Game::gameLevel[Game::currentLevel] = random(0, 4); // Create a random move every time. 0 to 4 exclusive.
   ++Game::currentLevel;
   int nextDificulty = Game::gameDifficulty * Game::currentLevel;
@@ -257,16 +242,12 @@ int Game::readButton(int buttonPin) {
     }
     Game::lastButtonValue = currentButtonValue;
     if (return_value >= 0) {
-      Serial.print("readButton: Received signal from button number: ");
-      Serial.println(return_value);
     }
     return return_value;
 }
 
 int Game::gameOver() {
-    Serial.println("game_is_over: Checking if game is over!");
     if (Game::gameIsOver) {
-      Serial.println("game_is_over: Game is over!");
       int i = 0;
 
     }
@@ -278,7 +259,6 @@ int Game::gameOver() {
  */
 int Game::userInput() {
     for (int i = 0; i < Game::currentLevel; ++i) {
-      Serial.println("userInput: User is pressing.");
       int buttonPressed = -1;
       while(true) {
           buttonPressed = readButton(Game::RED_BUTTON_PIN);
@@ -309,24 +289,37 @@ int Game::userInput() {
     return 1;
 }
 
-Game g = Game(100); //  Constructs the game object.
+Game g; //  Constructs the game object.
+bool read_from_serial = true;
 void setup() {
   Serial.begin(9600);
   randomSeed(0);
 }
 
 void loop() {
-  if (g.gameOver() == 1) { 
-    delay(3000); // Wait for serial to finish printing.
 
-    g = Game(100);
-    randomSeed(0);
-    g.gameIsOver = 0;
-    
-  } else {
-    g.playLevel();
-    if (g.userInput() == 0) {
-        g.gameIsOver = 1;
+  if(read_from_serial) {
+    while(!Serial.available() > 0) {
+      delay(10);
     }
+    String data = Serial.readStringUntil('\n');
+    if (data == "newgame") {
+      read_from_serial = false;
+       delay(1000); // Wait for serial to finish printing.
+    
+        g = Game(100);
+        g.gameIsOver = 0;
+    }
+  } else {
+      if (g.gameOver() == 1) { 
+          Serial.println(g.currentLevel);
+          read_from_serial = true;
+        
+      } else {
+        g.playLevel();
+        if (g.userInput() == 0) {
+            g.gameIsOver = 1;
+        }
+      }
   }
 }

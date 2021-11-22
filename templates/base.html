@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+
+<body>
+    <h1>Simon Says</h1>
+    <h2>How to use:</h2>
+    <p>Press "START" to start the game. Press the pattern of lights that arduino shows to you. Try to go as many rouds
+        as you can. When you push incorrect button, game is over. Press "START" to start the game again. </p>
+    <br>
+    
+    <a id="startButton" class="myButton" >START</a>
+    <br>
+    <br>
+    <h2>Game....<span id="gameStateSpan">is over!</span></h2>
+    <h2 id="resultText">You survived on level <span id="resultTextsSpan">x</span>!</h2>
+
+    <script src="{{url_for('static', filename='index.js')}}"></script>
+
+
+</body>
+
+</html>
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{testing}}
+    Hello World from HTML!
+    <a id="button">testi </a>
+</body>
+<script>
+
+    var elem = document.querySelector("a#button")
+    elem.onclick = async () => {
+        await fetch("/newgame")
+    }
+</script>
+</html> -->

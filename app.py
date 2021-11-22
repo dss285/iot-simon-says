@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import atexit
 import threading
 import queue
@@ -20,7 +20,7 @@ def arduino():
     global in_queue
     while True:
         try:
-            ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+            ser = serial.Serial('/dev/ttyACM1', 9600, timeout=1)
             while True:
                 while not out_queue.empty():
                     ser.write(out_queue.get())
@@ -36,7 +36,7 @@ def arduino():
 
 arduino_thread = threading.Thread(target=arduino, daemon=True)
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_url_path='', static_folder='static')
 
     def interrupt():
         global arduino_thread
@@ -53,7 +53,11 @@ def create_app():
 app = create_app()
 @app.route('/')
 def hello_world():
-    out_queue.put(b"Hello from Flask!\n")
-    return 'Hello, World!'
+    
+    return render_template('home.html', testing="ok")
+@app.route('/newgame')
+def wait_for_queue():
+    out_queue.put(b"newgame\n")
+    return ""
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", threaded=False, processes=0)
