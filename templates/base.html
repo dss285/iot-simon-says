@@ -15,12 +15,25 @@
     <p>Press "START" to start the game. Press the pattern of lights that arduino shows to you. Try to go as many rouds
         as you can. When you push incorrect button, game is over. Press "START" to start the game again. </p>
     <br>
-    
+    <input type="radio" value="Tommi" name="player"> Tommi<br>
+    <input type="radio" value="Glynis" name="player"> Glynis<br>
+    <input type="radio" value="Teija" name="player"> Teija<br>
     <a id="startButton" class="myButton" >START</a>
     <br>
     <br>
     <h2 id="gameState">Game....<span id="gameStateSpan">is over!</span></h2><br>
     <h2 id="resultText">You survived on level <span id="resultTextSpan">0</span>!</h2>
+
+    <table>
+        <thead>
+            <tr><th>Player</th><th>Best Score</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Tommi</td><td id="tommiScore">0</td></tr>
+            <tr><td>Glynis</td><td id="glynisScore">0</td></tr>
+            <tr><td>Teija</td><td id="teijaScore">0</td></tr>
+        </tbody>
+    </table>
 
     <script src="{{url_for('static', filename='index.js')}}"></script>
 
