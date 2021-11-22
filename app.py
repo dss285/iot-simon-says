@@ -15,21 +15,24 @@ import time
 
 out_queue = queue.Queue()
 in_queue = queue.Queue()
+gameRunning = False
 def arduino():
     global out_queue
     global in_queue
+    global gameRunning
     while True:
         try:
-            ser = serial.Serial('/dev/ttyACM1', 9600, timeout=1)
+            ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
             while True:
                 while not out_queue.empty():
                     ser.write(out_queue.get())
-                
+                    out_queue.queue.clear()
                 
                 line = ser.readline().decode('utf-8').rstrip()
                 if line:
-                    print(line)
+                    out_queue.queue.clear()
                     in_queue.put(line)
+                    print(line)
             ser.close()
         except Exception as e:
             print(e)
@@ -59,5 +62,8 @@ def hello_world():
 def wait_for_queue():
     out_queue.put(b"newgame\n")
     return ""
+@app.route('/lastgame')
+def lastgame():
+    return in_queue.get()
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", threaded=False, processes=0)

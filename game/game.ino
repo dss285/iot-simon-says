@@ -309,11 +309,13 @@ void loop() {
     
         g = Game(100);
         g.gameIsOver = 0;
+        
     }
   } else {
       if (g.gameOver() == 1) { 
           Serial.println(g.currentLevel);
           read_from_serial = true;
+          Serial.readString();
         
       } else {
         g.playLevel();

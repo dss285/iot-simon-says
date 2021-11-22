@@ -1,7 +1,26 @@
 // A $( document ).ready() block.
-var elem = document.querySelector("a#startButton")
-elem.onclick = async () => {
+let gameState= document.getElementById ("gameState");
+let gameStateSpan= document.getElementById ("gameStateSpan");
+let resultText= document.getElementById ("resultText");
+let resultTextSpan= document.getElementById ("resultTextSpan");
+let startButton = document.querySelector("a#startButton")
+let gameRunning = false;
+resultText.style.display = "none";
+gameState.style.display = "none"
+startButton.onclick = async () => {
 	await fetch("/newgame")
+	if (!gameRunning) {
+		gameRunning = true;
+		resultText.style.display = "none";
+		gameStateSpan.innerHTML = "is running"
+		gameState.style.display = "initial";
+		var roundsSurvived = parseInt(await (await fetch("/lastgame")).text())-1
+		resultTextSpan.innerHTML = roundsSurvived
+		gameStateSpan.innerHTML = "is over"
+		resultText.style.display = "initial";
+		gameRunning = false;
+	}
+
 }
 
 $( document ).ready(function() {
@@ -10,10 +29,6 @@ $( document ).ready(function() {
 
     //need to listen incoming signals and call the right functions according to them
 
-let gameStateSpan= document.getElementById ("gameStateSpan");
-let resultText= document.getElementById ("resultText");
-let resultTextSpan= document.getElementById ("resultTextSpan");
-let gameLevel = 0 //How to catch gamelevel?
 
 
 
