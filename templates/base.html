@@ -24,16 +24,30 @@
     <h2 id="gameState">Game....<span id="gameStateSpan">is over!</span></h2><br>
     <h2 id="resultText">You survived on level <span id="resultTextSpan">0</span>!</h2>
 
-    <table>
+    <style type="text/css">
+        </style>
+        <table class="tg" width="100%">
         <thead>
-            <tr><th>Player</th><th>Best Score</th></tr>
+          <tr>
+            <th class="tg-d52n">Player</th>
+            <th class="tg-d52n">Best Score</th>
+          </tr>
         </thead>
         <tbody>
-            <tr><td>Tommi</td><td id="tommiScore">0</td></tr>
-            <tr><td>Glynis</td><td id="glynisScore">0</td></tr>
-            <tr><td>Teija</td><td id="teijaScore">0</td></tr>
+          <tr>
+            <td class="tg-b6g2">Tommi</td>
+            <td class="tg-b6g2">0</td>
+          </tr>
+          <tr>
+            <td class="tg-0lax">Tejia</td>
+            <td class="tg-0lax">0</td>
+          </tr>
+          <tr>
+            <td class="tg-b6g2">Glynis</td>
+            <td class="tg-b6g2">0</td>
+          </tr>
         </tbody>
-    </table>
+        </table>
 
     <script src="{{url_for('static', filename='index.js')}}"></script>
 

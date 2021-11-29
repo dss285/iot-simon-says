@@ -40,3 +40,12 @@ h2{
 	position:relative;
 	top:1px;
 }
+
+.tg  {border-collapse:collapse;border-color:#aaa;border-spacing:0;border-style:solid;border-width:1px;}
+        .tg td{background-color:#fff;border-color:#aaa;border-style:solid;border-width:0px;color:#333;
+          font-family:Arial, sans-serif;font-size:30px;overflow:hidden;padding:10px 15px;word-break:normal;}
+        .tg th{background-color:#f38630;border-color:#aaa;border-style:solid;border-width:0px;color:#fff;
+          font-family:Arial, sans-serif;font-size:30px;font-weight:normal;overflow:hidden;padding:10px 15px;word-break:normal;}
+        .tg .tg-d52n{background-color:#b8e356;border-color:inherit;text-align:left;vertical-align:top}
+        .tg .tg-b6g2{background-color:#efefef;text-align:left;vertical-align:top}
+        .tg .tg-0lax{text-align:left;vertical-align:top}
